@@ -10,7 +10,6 @@ import csv
 
 app = Flask(__name__)
 
-mynumber = "+14087676299"
 app_url = "http://tcb-notification.herokuapp.com"
 #app_url = "http://localhost:5000"
 
@@ -34,7 +33,7 @@ def make_call():
         client = TwilioRestClient(account_sid, auth_token)
         call = client.calls.create(
             to=contact[1],
-            from_=mynumber,
+            from_= os.environ['ACCOUNT_SID'],
             url=app_url+"/message?name=" + contact[0])
         send_sms(contact[0],contact[1])
 
@@ -65,7 +64,7 @@ def send_sms(name,number):
 
     client.messages.create(
         to=number,
-        from_=mynumber,
+        from_= os.environ['ACCOUNT_SID'],
         body=name + " TCB in progres.\nPlease join 408-555-1212"
         )
 
