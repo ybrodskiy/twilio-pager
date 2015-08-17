@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
   <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/myjs.js"></script>
   <title>Caller</title>
 </head>
 <body>
@@ -12,13 +13,18 @@
     <h1><i class="mdi-action-alarm"></i> Calling in:</h1>
     <h1 id="clock"></h1>
   </div>
-  
+  <div id="status">
+  </div>
+  <div id="make-call">
+    <a class="waves-effect waves-light btn" onclick="start_timer()"><i class="mdi-file-cloud left"></i>Send Notifications</a>
+  </div> 
   <div id="phone-container">
     <h1 class="mdi-communication-call"></h1>
   </div>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
-  <script src="/static/myjs.js"></script>
+
+
 
 </body>
 </html>

@@ -26,7 +26,11 @@ h1 {
   -o-box-shadow: 2px 2px 10px -2px #111;
   box-shadow: 2px 2px 10px -2px #111;
 }
-
+#make-call {
+  position: fixed;
+  right: 0;
+  top: 0;
+}
 #phone-container {
   position: fixed;
   bottom: 10vh;

@@ -1,4 +1,4 @@
-$(function(){
+function start_timer(){
   var myVar=setInterval(function(){myTimer()},1000);
 
   var myTime  = new Date();
@@ -20,9 +20,13 @@ $(function(){
       $('#clock').text('00:00:00');
       $('#phone-container h1').removeClass('mdi-communication-call');
       $('#phone-container h1').addClass('mdi-notification-phone-in-talk');
-      $.get('/make_call');
+      $.get('/make_call',function(data){
+	Materialize.toast(data, 4000) // 4000 is the duration of the toast
+	//$( "#status" )
+	   //.append(item)
+	});
     }
 
   }
-});
+}
 
