@@ -1,5 +1,5 @@
 import sys
 
-sys.path.append('/var/www/tcb-prod')
+sys.path.append('/var/www/tcb-prod/twilio-pager')
 
-from auth import app as application
+from pager import app as application

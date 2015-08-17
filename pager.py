@@ -17,10 +17,8 @@ app.config.update(
   GOOGLE_LOGIN_REDIRECT_SCHEME="http",
 )
 
-# move to config
-app_url = "http://tcb.mypaaspoc.net:8080"
-allowed_users = {"ybrodskiy@gmaili.com"}
-#app_url = "http://localhost:5000"
+app_url = app.config['APP_URL']
+allowed_users = app.config['AUTH_USERS'] 
 google_login = GoogleLogin(app)
 
 def get_notification_list():
@@ -28,16 +26,20 @@ def get_notification_list():
         reader = csv.reader(f)
         return list(reader)
 
+def home():
+    return render_template('home.html')
+
 @google_login.login_success
 def login_success(token, profile):
   if profile['email'] in allowed_users:
-    return jsonify(token=token, profile=profile)
+    return render_template('home.html')
+    #return jsonify(token=token, profile=profile)
   else:
     requests.get('https://accounts.google.com/o/oauth2/revoke?token='+token['access_token'])
     return """
 <html>
 <h1>Invalid user</h1>
-<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-2);">
 </html>
 """
 
@@ -52,21 +54,18 @@ def index():
 <a href="{}">Login with Google</a>
 """.format(google_login.authorization_url())
 
-def home():
-    return render_template('home.html')
-
 
 @app.route('/make_call')
 def make_call():
-    account_sid = os.environ['ACCOUNT_SID']
-    auth_token = os.environ['AUTH_TOKEN']
+    account_sid = app.config['ACCOUNT_SID']
+    auth_token = app.config['AUTH_TOKEN']
     client = TwilioRestClient(account_sid, auth_token)
 
     for contact in get_notification_list():
         client = TwilioRestClient(account_sid, auth_token)
         call = client.calls.create(
             to=contact[1],
-            from_= os.environ['ACCOUNT_SID'],
+            from_= app.config['TW_NUMBER'],
             url=app_url+"/message?name=" + contact[0])
         send_sms(contact[0],contact[1])
 
@@ -91,13 +90,13 @@ def message():
     return Response(str(resp), mimetype='text/xml')
 
 def send_sms(name,number):
-    account_sid = os.environ['ACCOUNT_SID']
-    auth_token = os.environ['AUTH_TOKEN']
+    account_sid = app.config['ACCOUNT_SID']
+    auth_token = app.config['AUTH_TOKEN']
     client = TwilioRestClient(account_sid, auth_token)
 
     client.messages.create(
         to=number,
-        from_= os.environ['ACCOUNT_SID'],
+        from_= app.config['TW_NUMBER'],
         body=name + " TCB in progres.\nPlease join 408-555-1212"
         )
 
