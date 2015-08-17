@@ -1,24 +1,57 @@
 import os
 import sys
-from flask import Flask
-from flask import Response
-from flask import render_template
+from flask import Flask, jsonify,Response,render_template
+from flask_oauth2_login import GoogleLogin
 from twilio.rest import TwilioRestClient
 import twilio.twiml
 import praw
 import csv
+import requests
 
-app = Flask(__name__)
 
-app_url = "http://tcb-notification.herokuapp.com"
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
+
+app.config.update(
+  SECRET_KEY="secret",
+  GOOGLE_LOGIN_REDIRECT_SCHEME="http",
+)
+
+# move to config
+app_url = "http://tcb.mypaaspoc.net:8080"
+allowed_users = {"ybrodskiy@gmaili.com"}
 #app_url = "http://localhost:5000"
+google_login = GoogleLogin(app)
 
 def get_notification_list():
     with open('./notification_list.csv') as f:
         reader = csv.reader(f)
         return list(reader)
 
+@google_login.login_success
+def login_success(token, profile):
+  if profile['email'] in allowed_users:
+    return jsonify(token=token, profile=profile)
+  else:
+    requests.get('https://accounts.google.com/o/oauth2/revoke?token='+token['access_token'])
+    return """
+<html>
+<h1>Invalid user</h1>
+<INPUT TYPE="button" VALUE="Back" onClick="history.go(-1);">
+</html>
+"""
+
+@google_login.login_failure
+def login_failure(e):
+  return jsonify(error=str(e))
+
 @app.route('/')
+def index():
+  return """
+<html>
+<a href="{}">Login with Google</a>
+""".format(google_login.authorization_url())
+
 def home():
     return render_template('home.html')
 
