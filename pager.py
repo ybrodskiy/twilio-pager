@@ -60,7 +60,7 @@ def make_call():
     account_sid = app.config['ACCOUNT_SID']
     auth_token = app.config['AUTH_TOKEN']
     client = TwilioRestClient(account_sid, auth_token)
-
+    
     for contact in get_notification_list():
         client = TwilioRestClient(account_sid, auth_token)
         call = client.calls.create(
@@ -69,7 +69,7 @@ def make_call():
             url=app_url+"/message?name=" + contact[0])
         send_sms(contact[0],contact[1])
 
-    return "Call in progress to:" + contact[0]
+    return "Notified " + len(get_notification_list())
 
 @app.route('/message', methods=['GET','POST'])
 def message():
@@ -79,8 +79,7 @@ def message():
     #titles = r.get_front_page(limit=1)
     contact_name = request.form.get('name', None)
     resp = twilio.twiml.Response()
-    resp.say("Hey "+contact_name+". How is it going?.\
-    This is just a test. But soon it will wake you up if there is a site issue.")
+    resp.say(contact_name+". "+app.config['MESSAGE'])
     
     #for x in titles:
     #  resp.say(str(x.title))
@@ -97,7 +96,7 @@ def send_sms(name,number):
     client.messages.create(
         to=number,
         from_= app.config['TW_NUMBER'],
-        body=name + " TCB in progres.\nPlease join 408-555-1212"
+        body=name + "\n" +app.config['MESSAGE'] 
         )
 
 if __name__ == "__main__":

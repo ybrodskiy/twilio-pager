@@ -29,4 +29,6 @@ function start_timer(){
 
   }
 }
-
+function for_testing(){
+return "got it"
+}
