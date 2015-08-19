@@ -7,7 +7,7 @@ import twilio.twiml
 import praw
 import csv
 import requests
-
+from requests.utils import quote
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -66,7 +66,7 @@ def make_call():
         call = client.calls.create(
             to=contact[1],
             from_= app.config['TW_NUMBER'],
-            url=app_url+"/message?name=" + contact[0])
+            url=app_url+"/message?name=" + quote(contact[0],safe=''))
         send_sms(contact[0],contact[1])
 
     return "Notified " + len(get_notification_list())
@@ -100,4 +100,4 @@ def send_sms(name,number):
         )
 
 if __name__ == "__main__":
-   app.run(debug=True)
+   app.run()
