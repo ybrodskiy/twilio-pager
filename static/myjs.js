@@ -21,6 +21,7 @@ function start_timer(){
       $('#phone-container h1').removeClass('mdi-communication-call');
       $('#phone-container h1').addClass('mdi-notification-phone-in-talk');
       $.get('/make_call',function(data){
+        show_image()
 	//$( "#status" )
 	   //.append(item)
 	});
@@ -28,7 +29,9 @@ function start_timer(){
 
   }
 }
-
+function show_image(){
+  document.getElementById('my_images').style.visibility='visible';
+}
 function cancel_page() {
     $('#modal1').closeModal();
 }
