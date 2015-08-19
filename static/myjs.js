@@ -29,16 +29,6 @@ function start_timer(){
   }
 }
 
-$(document).ready(function(){
-  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-  $('.modal-trigger').leanModal({
-    dismissible: false, // Modal can be dismissed by clicking outside of the modal
-    opacity: .5, // Opacity of modal background
-    in_duration: 300, // Transition in duration
-    complete: function() { start_timer(); } // Callback for Modal close
-  });
-});
-
 function cancel_page() {
     $('#modal1').closeModal();
 }

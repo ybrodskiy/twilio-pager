@@ -31,7 +31,7 @@
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
-      <a href="#!" class="modal-action waves-effect waves-red btn-flat" onclick="send_page()">Cancel</a>
+      <a href="#!" class="modal-action waves-effect waves-red btn-flat" onclick="cancel_page()">Cancel</a>
     </div>
     </div>
   </div>
@@ -41,6 +41,17 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+<script>
+$(document).ready(function(){
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  $('.modal-trigger').leanModal({
+    dismissible: false, // Modal can be dismissed by clicking outside of the modal
+    opacity: .5, // Opacity of modal background
+    in_duration: 300, // Transition in duration
+    complete: function() { start_timer(); } // Callback for Modal close
+  });
+});
 
+</script>
 </body>
 </html>
