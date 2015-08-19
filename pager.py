@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask, jsonify,Response,render_template
+from flask import Flask, jsonify,Response,render_template,request
 from flask_oauth2_login import GoogleLogin
 from twilio.rest import TwilioRestClient
 import twilio.twiml
@@ -8,6 +8,7 @@ import praw
 import csv
 import requests
 from requests.utils import quote
+from urllib import unquote
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
@@ -69,7 +70,8 @@ def make_call():
             url=app_url+"/message?name=" + quote(contact[0],safe=''))
         send_sms(contact[0],contact[1])
 
-    return "Notified " + len(get_notification_list())
+    #return "Notified " + len(get_notification_list()).toString()
+    return "Everyone is Notified"
 
 @app.route('/message', methods=['GET','POST'])
 def message():
@@ -79,7 +81,7 @@ def message():
     #titles = r.get_front_page(limit=1)
     contact_name = request.form.get('name', None)
     resp = twilio.twiml.Response()
-    resp.say(contact_name+". "+app.config['MESSAGE'])
+    resp.say(unquote(contact_name)+". "+app.config['MESSAGE'])
     
     #for x in titles:
     #  resp.say(str(x.title))
