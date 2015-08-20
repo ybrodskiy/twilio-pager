@@ -30,8 +30,10 @@ function start_timer(){
   }
 }
 function show_image(){
-  document.getElementById('my_images').style.visibility='visible';
+  $( ".call-container" ).remove();
+  document.getElementById('wait').style.visibility='visible';
 }
+
 function cancel_page() {
     $('#modal1').closeModal();
 }

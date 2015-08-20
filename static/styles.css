@@ -40,3 +40,12 @@ h1 {
 #phone-container h1 {
   font-size: 15em;
 }
+#centerObject {
+  width: 50%;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 5vh;
+  border-radius: 1em;
+  padding: 1em;
+}

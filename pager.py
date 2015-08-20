@@ -75,16 +75,12 @@ def make_call():
 
 @app.route('/message', methods=['GET','POST'])
 def message():
-    reload(sys)
-    #sys.setdefaultencoding('utf8')
-    #r = praw.Reddit(user_agent='web_caller_zeke')
-    #titles = r.get_front_page(limit=1)
-    contact_name = request.form.get('name', None)
+    contact_name = request.args.get('name')
+    #contact_name = request.form.get('name', None)
     resp = twilio.twiml.Response()
-    resp.say(unquote(contact_name)+". "+app.config['MESSAGE'])
+    resp.say(contact_name)
+    resp.say(app.config['MESSAGE'])
     
-    #for x in titles:
-    #  resp.say(str(x.title))
     
     resp.say("Cheers!")
 
